@@ -2,18 +2,43 @@ const express = require("express");
 
 const app = express();
 
-app.listen(3000, () => console.log("Listening on port 3000"));
+const port = process.env.PORT || 3000
+
+
+const courses = [
+    
+    {id:"1", name: "course1"},
+    {id:"2", name: "course2"},
+    {id:"3", name: "course3"},
+    {id:"4", name: "course4"},
+    {id:"5", name: "course5"},
+    {id:"6", name: "course6"}
+];
+
+app.listen(port, () => console.log(`Listening on port ${port}`));
 
 app.get("/", (request, response) => {
     response.send("Hello World!");
 
 });
 
-app.get("/api/courses", (request, response) => {
-    response.send(getCourses());   
+app.get("/api/courses/", (request, response) => {
+    response.send(getCourses());
+});
+
+
+app.get('/api/courses/:id', (request, response) => {
+    
+    const course = courses.find(c => c.id === request.params.id);
+    if(!course) {
+        response.status(404).send(`The course with id: ${request.params.id} is not found.`);
+    } else {
+        response.send(course)
+    }
+
 });
 
 
 function getCourses() {
-    return ["ML", "Node-JS", "Spring boot"];
+    return courses;
 }
