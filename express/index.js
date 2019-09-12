@@ -4,9 +4,7 @@ const app = express();
 app.use(express.json());
 const port = process.env.PORT || 3000
 
-
-const courses = [
-    
+const courses = [  
     {id:1   , name: "course1"},
     {id:2   , name: "course2"},
     {id:3   , name: "course3"},
@@ -26,7 +24,6 @@ app.get("/api/courses/", (request, response) => {
     response.send(getCourses());
 });
 
-
 app.get('/api/courses/:id', (request, response) => {
     
     const course = courses.find(c => c.id === parseInt(request.params.id));
@@ -35,7 +32,6 @@ app.get('/api/courses/:id', (request, response) => {
     } else {
         response.send(course)
     }
-
 });
 
 app.post("/api/courses", (request, response) => {
@@ -45,9 +41,7 @@ app.post("/api/courses", (request, response) => {
     };
     addCourse(newCourse);
     response.send(newCourse);
-
 });
-
 
 function addCourse(course) {
     courses.push(course);
