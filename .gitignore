@@ -1,2 +1,3 @@
 node_modules/
 express/.vscode/launch.json
+express/package-lock.json
