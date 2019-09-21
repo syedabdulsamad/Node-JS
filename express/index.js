@@ -1,8 +1,20 @@
 const express = require("express");
 const joi = require("joi");
-
+const responseTime = require('response-time')
 const app = express();
+const config = require("config");
 app.use(express.json());
+app.use(express.urlencoded({extended : true}));
+app.use(express.static("public"));
+
+console.log(`Application name : ${config.get("name")}`);
+console.log(`Application main author : ${config.get("creator.main_author")}`);
+console.log(`Application main author name : ${config.get("creator.main_author_name")}`);
+
+if(app.get("env") ===  "development") {
+    app.use(responseTime({digits:5, header: "time-taken", suffix: true}));
+}
+
 const port = process.env.PORT || 3000
 
 const courses = [  

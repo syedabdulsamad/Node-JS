@@ -62,8 +62,12 @@ app.put("/geners/:id", (request, response) => {
             response.send(foundGenere);
         }
     }
+});
 
+app.delete("/geners/:id", (request, response) => {
 
+    genersList = genersList.filter(genere => genere.id !== parseInt(request.params.id));
+    response.status(200).send(genersList);
 });
 
 function validateName(request) {

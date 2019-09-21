@@ -1,7 +1,7 @@
 {
-  "name": "express-practice",
+  "name": "vidly",
   "version": "1.0.0",
-  "description": "Express framework practice",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,9 +9,11 @@
   "author": "Syed Abdul Samad",
   "license": "ISC",
   "dependencies": {
-    "config": "^1.31.0",
-    "express": "^4.17.1",
+    "expess": "0.0.1-security",
     "joi": "^14.3.1",
-    "response-time": "^2.3.2"
+    "nodemon": "^1.19.2"
+  },
+  "devDependencies": {
+    "jshint": "^2.10.2"
   }
 }
