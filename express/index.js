@@ -1,3 +1,5 @@
+const generalLog = require("debug")("app:general")
+const dbLog = require("debug")("app:db")
 const express = require("express");
 const joi = require("joi");
 const responseTime = require('response-time')
@@ -14,6 +16,9 @@ console.log(`Application main author name : ${config.get("creator.main_author_na
 if(app.get("env") ===  "development") {
     app.use(responseTime({digits:5, header: "time-taken", suffix: true}));
 }
+
+generalLog("This is a general log");
+dbLog("This is a DB log");
 
 const port = process.env.PORT || 3000
 
