@@ -1,7 +1,7 @@
 {
-  "name": "vidly",
+  "name": "vidly-project",
   "version": "1.0.0",
-  "description": "",
+  "description": "Generes endpoint",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,11 +9,8 @@
   "author": "Syed Abdul Samad",
   "license": "ISC",
   "dependencies": {
-    "expess": "0.0.1-security",
+    "express": "^4.17.1",
     "joi": "^14.3.1",
-    "nodemon": "^1.19.2"
-  },
-  "devDependencies": {
-    "jshint": "^2.10.2"
+    "nodemon": "^2.0.2"
   }
 }
