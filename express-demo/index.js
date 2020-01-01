@@ -1,7 +1,25 @@
+const config = require("config");
 const Joi = require("joi");
 const express = require('express');
+const logger = require("./logger");
+
 const app = express();
 app.use(express.json());
+app.use(logger);
+
+
+app.use(function (req, res, myFunction) {
+    console.log("Logging this middleware function");
+    myFunction();
+})
+
+console.log(`App name is : ${config.get("name")}`);
+console.log(`Mail server is : ${config.get("mail").get("host")}`);
+
+console.log(`Mail server is : ${config.get("mail.password")}`);
+
+console.log(`Environment is : ${process.env.NODE_ENV}`);
+console.log(`Environment is : ${app.get("env")}`);
 
 const courses = [
     {id: 1, name: "Data structures"},
