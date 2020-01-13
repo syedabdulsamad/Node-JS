@@ -5,7 +5,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const pug = require("pug");
 const Joi = require("joi");
-const router = require("./Routes/courses");
+const router = require("./courses");
 const homepageRouter = require("./Routes/homepage");
 
 const express = require('express');
