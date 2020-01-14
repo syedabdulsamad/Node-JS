@@ -7,7 +7,6 @@ const mongoose = require("mongoose")
     console.log(error.message);
  });
 
-
 const CourseSchema = new mongoose.Schema({
      tags: { 
          type: [String], 
@@ -16,7 +15,6 @@ const CourseSchema = new mongoose.Schema({
                 return new Promise((resolve, reject) => {
                     setTimeout(() => {
                         var result = (v != null && v.length > 0)
-                        console.log("Result iof async validation is :" + result);
                         resolve(result);
                      }, 4000)
                 });   
@@ -26,14 +24,21 @@ const CourseSchema = new mongoose.Schema({
         },
      name: {type: String, required: true, minlength: 5, maxlength: 44},
      category: {type: String, required: true, enum: ["AI", "Maths"]},
-     author: {type: String, validate: function() {
-         return this.author.length > 0
-     }},
+     author: {  
+         type: String,  
+         required: true,
+         validate: {
+             validator: function(value) {
+                 return (value!= null && value.length > 10);
+             },
+             message: "Author should be at least 5 chars long"
+         }
+        },
+
      isPublished: {type: Boolean, required: true},
      price: Number,
      date: {type: Date, default: Date.now()}
 });
-
 
 
 async function createCourse() {
@@ -41,7 +46,7 @@ async function createCourse() {
     const course = new Course({
         name: "Discrete Maths",
         tags: [],
-        author: "SAMAD",
+        author: "ddaassfd",
         category: "Maths",
         isPublished: false
     });
@@ -51,7 +56,10 @@ async function createCourse() {
         console.log("Validation passed");
         const result = await course.save();
     } catch(ex) {
-        console.log(ex.message);
+        //console.log(ex);
+        for(field in ex.errors) {
+            console.log(ex.errors[field].message);
+        }
     }
 }
 
@@ -94,7 +102,6 @@ async function findCoursesEx3() {
     .select({name: 1, author: 1, tags: 1, price: 1, isPublished: 1});
     console.log(courses);
 }
-
 
 //findCoursesEx3();
 //findCoursesEx2();

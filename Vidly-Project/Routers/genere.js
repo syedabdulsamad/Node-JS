@@ -1,27 +1,39 @@
 const express = require("express");
 const Joi = require("joi");
+const mongoose =  require("mongoose")
 const router = express.Router();
 
-
-const generes = [
-    {id: 1, name: "Action"},
-    {id: 2, name: "Comedy"},
-    {id: 3, name: "Horror"},
-    {id: 4, name: "Adventure"},
-    {id: 5, name: "Suspense"},
-];
-
-router.get("/", (req, res) => {
-    res.send(generes);
+const GenereSchema = mongoose.Schema({
+    name: {type: String, required: true, minlength: 4}
 });
 
-router.get("/:id", (req, res) => {
-    const genere = generes.find(g => g.id === parseInt(req.params.id));
-    return res.status((genere == null) ? 404 : 200)
-    .send((genere == null) ? "Genere with the given id not found" : genere);
+const Genere = mongoose.model("genere", GenereSchema);
+
+async function fetchAllGeners() {
+   return Genere.find((error, result) => {
+        if(result) {
+            console.log("result is :" + result);
+           return Promise.resolve(result);
+        } else {
+           return Promise.reject("Failed to fetch all geners");
+        }});
+}
+
+router.get("/", async (req, res) => {
+    fetchAllGeners().then((generes)=> {
+        res.send(generes);
+    }).catch((error) => {
+        res.status(404).send(error.message);
+    }) 
 });
 
-router.post("/", (req, res) => {
+
+router.get("/:id", async (req, res) => {
+    const genere = await Genere.findById({_id: req.params.id});
+    (genere == null) ? res.status(404).send(`Genere not found with id ${req.body.id}`) : res.send(genere)
+});
+
+ router.post("/", async (req, res) => {
     const schema = {
         name: Joi.string().min(4).max(25).required()
     };
@@ -30,45 +42,42 @@ router.post("/", (req, res) => {
     if(error) {
         return res.status(400).send(error.details[0].message);
     }
-    var genere = {
-        id: generes.length + 1, 
+
+    const genere = new Genere({
         name: req.body.name
-    };
-    generes.push(genere);
-    return res.status(201).send(genere);
+    });
+
+    const createdObj = await genere.save();
+    res.status(201).send(createdObj);
 })
 
-
-
-router.put("/:id", (req, res) => {
+router.put("/:id", async (req, res) => {
 
     const schema = {
         name: Joi.string().min(4).max(25).required()
     };
-
     const {error} = Joi.validate(req.body, schema);
     if(error) {
         return res.status(400).send(error.details[0].message);
     }
 
-    var genere = generes.find(g => g.id === parseInt(req.params.id));
-    if(!genere) {
-       return res.status(404).send("Genere with the given id not found");
-    }
-    genere.name = req.body.name
-    res.status(200).send(genere);
+    const updatedGenere = await Genere.findByIdAndUpdate({_id: req.params.id},  {name: req.body.name}, (error, result) => {
+        if(error) {
+            res.status(404).send(error.message);  
+        } else {
+            res.send(result);     
+        }
+    });
 });
 
-
-router.delete("/:id", (req, res) => {
-
-    var genere = generes.find(g => g.id === parseInt(req.params.id));
-    if(!genere) {
-       return res.status(404).send("Genere with the given id not found");
-    }
-    const index = generes.indexOf(genere);
-    generes.splice(index, 1);
-    res.status(200).send(genere);
+router.delete("/:id", async (req, res) => {
+    const deletedGenere = await Genere.findByIdAndRemove(req.params.id, (error, result) => {
+        if(error) {
+            res.status(404).send(error.message);  
+        } else {
+            res.send(result);   
+        }
+    });
 });
 
 module.exports = router;
