@@ -1,18 +1,12 @@
 const express = require("express");
 const Joi = require("joi");
+const Genere = require("../models/genere");
 const mongoose =  require("mongoose")
 const router = express.Router();
-
-const GenereSchema = mongoose.Schema({
-    name: {type: String, required: true, minlength: 4}
-});
-
-const Genere = mongoose.model("genere", GenereSchema);
 
 async function fetchAllGeners() {
    return Genere.find((error, result) => {
         if(result) {
-            console.log("result is :" + result);
            return Promise.resolve(result);
         } else {
            return Promise.reject("Failed to fetch all geners");
@@ -42,11 +36,9 @@ router.get("/:id", async (req, res) => {
     if(error) {
         return res.status(400).send(error.details[0].message);
     }
-
     const genere = new Genere({
         name: req.body.name
     });
-
     const createdObj = await genere.save();
     res.status(201).send(createdObj);
 })
