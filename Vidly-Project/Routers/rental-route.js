@@ -14,7 +14,6 @@ router.get("/", async (req, res) => {
     res.send(rentals);
 });
 
-
 router.post("/", async (req, res) => {
 
     console.log("Request received");
@@ -48,6 +47,8 @@ router.post("/", async (req, res) => {
         {$inc: {numberInStock: -1} 
         })
         .run();
+        // decrement this as the update happens after the rental object is already created.
+        rental.movie.numberInStock -= 1;    
         res.send(rental);
     } catch(ex) {
         res.status(500).send("Something went wrong");

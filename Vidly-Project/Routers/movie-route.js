@@ -3,6 +3,11 @@ const router = app.Router();
 const {validateMovie, Movie} = require("../models/movie");
 const {GenereSchema, Genere} = require("../models/genere");
 
+router.get("/", async(req, res) => {
+    const movies = await Movie.find()
+    .select({"type": "1", "genere": "1", "numberInStock": "1", "dailyRentalRates":"1"});
+    res.send(movies);
+})
 
 router.post("/", async (req, res) => {
     const result = validateMovie(req.body);
