@@ -8,8 +8,8 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-
-    if(validateCustomer(req.body).error) {
+    const result = validateCustomer(req.body)
+    if(result.error) {
         res.status(400).send(result.error.message);
     }
     const customer = new Customer(req.body);
@@ -20,7 +20,6 @@ router.post("/", async (req, res) => {
 router.put("/:id", async(req, res) => {
 
     if(validateCustomer(req.body).error) {
-        console.log("Validation error : " + result.error);
         res.status(400).send(result.error.message);
     }
     await Customer.findByIdAndUpdate(req.params.id, {name:req.body.name, phone: req.body.phone, isGold: req.body.isGold}, {new: true}, (error, result) => {
