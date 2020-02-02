@@ -3,8 +3,9 @@ const app = require("express");
 const router = app.Router();
 
 router.get("/", async (req, res) => {
-    const courses = await Customer.find();
-    res.send(courses);
+    console.log("Coming to get request " + req);
+    const customers = await Customer.find();
+    res.send(customers);
 });
 
 router.post("/", async (req, res) => {

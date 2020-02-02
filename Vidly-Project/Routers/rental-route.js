@@ -1,30 +1,22 @@
-
 const Fawn = require("fawn");
 const app = require("express");
 const mongoose = require("mongoose");
 const router = app.Router();
-const {RentalSchema,validateRental, Rental} = require("../models/rental");
+const {Rental,validateRental} = require("../models/rental");
 const {CustomerSchema, validateCustomer, Customer} = require("../models/customer");
 const {MovieSchema, validateMovie, Movie} = require("../models/movie");
 
 Fawn.init(mongoose);
 
 router.get("/", async (req, res) => {
-    const rentals = await Rental.find().select({"movie.numberInStock": 1});
+    const rentals = await Rental.find({"name": "Sam rentals"});
     res.send(rentals);
 });
 
-router.post("/", async (req, res) => {
-
-    console.log("Request received");
+router.post("/", async (req, res) => { 
     if (validateRental(req.body).error) {
         return res.status(400).send("Input request is not correct");
     }
-
-    console.log("Comes here");
-
-    console.log("Request body is" + req.body);
-    
 
     const movie = await Movie.findById(req.body.movieId).select({_id: 1, title: 1, numberInStock: 1});
     const customer = await Customer.findById(req.body.customerId).select({_id: 1, name: 1, phone: 1, isGold: 1});

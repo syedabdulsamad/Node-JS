@@ -1,24 +1,12 @@
 const express = require("express");
 const Joi = require("joi");
-const Genere = require("../models/genere");
+const {Genere, GenereSchema} = require("../models/genere");
 const mongoose =  require("mongoose")
 const router = express.Router();
 
-async function fetchAllGeners() {
-   return Genere.find((error, result) => {
-        if(result) {
-           return Promise.resolve(result);
-        } else {
-           return Promise.reject("Failed to fetch all geners");
-        }});
-}
-
 router.get("/", async (req, res) => {
-    fetchAllGeners().then((generes)=> {
-        res.send(generes);
-    }).catch((error) => {
-        res.status(404).send(error.message);
-    }) 
+    const geners = await Genere.find();
+    res.send(geners)
 });
 
 
@@ -52,7 +40,6 @@ router.put("/:id", async (req, res) => {
     if(error) {
         return res.status(400).send(error.details[0].message);
     }
-
     const updatedGenere = await Genere.findByIdAndUpdate({_id: req.params.id},  {name: req.body.name}, (error, result) => {
         if(error) {
             res.status(404).send(error.message);  
