@@ -23,16 +23,10 @@ function validateUser(userBody) {
             requirementCount: 4,
           };
 
-    //    const isValidated = PasswordComplexity(passwordOptions).validate(userBody.password);
-    //    if(!isValidated) {
-    //        return ValidationResult
-    //    }
-
     const schema = Joi.object({
         name:  Joi.string().required().min(5),
         email: Joi.string().email().required(),
-        //password: Joi.string().email().required()
-        password: PasswordComplexity(passwordOptions)
+        password: PasswordComplexity(passwordOptions).required()
     });
     return schema.validate(userBody);
 }
