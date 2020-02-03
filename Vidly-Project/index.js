@@ -7,6 +7,8 @@ const movieRouter = require("./Routers/movie-route");
 const customerRouter = require("./Routers/customer-route");
 const rentalRouter = require("./Routers/rental-route");
 const userRouter = require("./Routers/user-route");
+const authRouter = require("./Routers/auth-route")
+
 const app = express();
 
 app.use(express.json());
@@ -16,6 +18,7 @@ app.use("/api/geners", router);
 app.use("/api/rentals", rentalRouter);
 app.use("/api/customers", customerRouter);
 app.use("/api/users", userRouter);
+app.use("/api/auth", authRouter);
 
 const port = process.env.port || 4000;
 app.listen(port, () => {console.log(`Listening on port ${port}`)});
