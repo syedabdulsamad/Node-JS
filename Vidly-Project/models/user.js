@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+const lodash =  require("lodash");
+const config =  require("config");
+const jwt = require("jsonwebtoken");
 const Joi = require("@hapi/joi");
 const PasswordComplexity = require("joi-password-complexity");
 const userSchema = mongoose.Schema({
@@ -9,6 +12,13 @@ const userSchema = mongoose.Schema({
         unique: true
     }
 });
+
+userSchema.methods.generateAuthToken = function() {
+
+    const filteredUser = lodash.pick(this, ["_id","name", "email"]);
+    const token = jwt.sign(filteredUser,config.get("vidly_auth_private_key"));
+    return token;
+};
 
 const User = mongoose.model("user", userSchema);
 function validateUser(userBody) {

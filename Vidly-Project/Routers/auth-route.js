@@ -1,9 +1,10 @@
 const app = require("express");
+
 const {User, validateUser} = require("../models/user");
 const bcrypt = require("bcrypt");
 const Joi = require("@hapi/joi");
+const lodash =  require("lodash");
 const router = app.Router();
-
 
 router.post("/", async(req, res) => {
 
@@ -22,10 +23,11 @@ router.post("/", async(req, res) => {
     if(!validated) {
         console.log("password mismatch");
        return res.status(400).send("invalid email or password");
-    }
-    res.send(true);
+    };
+    
+    const token = user.generateAuthToken();
+    res.send(token);
 });
-
 
 function validate(req) {
     const schema = Joi.object({

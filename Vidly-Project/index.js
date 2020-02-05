@@ -1,6 +1,7 @@
 const Joi = require("@hapi/joi");
 Joi.objectId = require("joi-objectid")(Joi);
 const mongoose =  require("mongoose");
+const config =  require("config");
 const express = require("express");
 const router = require("./Routers/genere-route");
 const movieRouter = require("./Routers/movie-route");
@@ -19,6 +20,12 @@ app.use("/api/rentals", rentalRouter);
 app.use("/api/customers", customerRouter);
 app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
+
+if(!config.get("vidly_auth_private_key")) {
+
+    console.log("Authorization key not found... EXITING app...");
+    process.exit(1);
+}
 
 const port = process.env.port || 4000;
 app.listen(port, () => {console.log(`Listening on port ${port}`)});
