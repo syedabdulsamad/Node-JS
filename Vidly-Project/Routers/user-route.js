@@ -1,6 +1,7 @@
 const app = require("express");
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const auth = require("../middlware/auth");
 const bcrypt = require("bcrypt");
 const lodash = require("lodash");
 const router = app.Router();
@@ -10,6 +11,18 @@ router.get("/", async(req, res) => {
 
     const users = await User.find();
     res.send(users);
+});
+
+router.get("/me", auth, async(req, res) => {
+    if(!req.user._id) {
+        return res.status(500).send("Something ent wrong");
+    } 
+    const user = await User.findById(req.user._id)
+    .select("-password")
+    if(!user) {
+        return res.status(404).send("User not found");
+    }
+    res.send(user);
 });
 
 router.post("/", async(req, res) => {
