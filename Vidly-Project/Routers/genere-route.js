@@ -1,4 +1,5 @@
 const express = require("express");
+const auth = require("../middlware/auth");
 const Joi = require("joi");
 const {Genere, GenereSchema} = require("../models/genere");
 const mongoose =  require("mongoose")
@@ -15,7 +16,7 @@ router.get("/:id", async (req, res) => {
     (genere == null) ? res.status(404).send(`Genere not found with id ${req.body.id}`) : res.send(genere)
 });
 
- router.post("/", async (req, res) => {
+ router.post("/", auth, async (req, res) => {
     const schema = {
         name: Joi.string().min(4).max(25).required()
     };
