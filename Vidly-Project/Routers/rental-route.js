@@ -1,5 +1,6 @@
 const Fawn = require("fawn");
 const app = require("express");
+const auth = require("../middlware/auth");
 const mongoose = require("mongoose");
 const router = app.Router();
 const {Rental,validateRental} = require("../models/rental");
@@ -9,11 +10,11 @@ const {MovieSchema, validateMovie, Movie} = require("../models/movie");
 Fawn.init(mongoose);
 
 router.get("/", async (req, res) => {
-    const rentals = await Rental.find({"name": "Sam rentals"});
+    const rentals = await Rental.find();
     res.send(rentals);
 });
 
-router.post("/", async (req, res) => { 
+router.post("/", auth, async (req, res) => { 
     if (validateRental(req.body).error) {
         return res.status(400).send("Input request is not correct");
     }

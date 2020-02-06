@@ -1,14 +1,14 @@
 const {Customer, validateCustomer} = require("../models/customer");
 const app = require("express");
+const auth = require("../middlware/auth");
 const router = app.Router();
 
 router.get("/", async (req, res) => {
-    console.log("Coming to get request " + req);
     const customers = await Customer.find();
     res.send(customers);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
     const result = validateCustomer(req.body)
     if(result.error) {
         res.status(400).send(result.error.message);
@@ -18,7 +18,7 @@ router.post("/", async (req, res) => {
     res.send(newCustomer);
 });
 
-router.put("/:id", async(req, res) => {
+router.put("/:id", auth, async(req, res) => {
 
     if(validateCustomer(req.body).error) {
         res.status(400).send(result.error.message);
