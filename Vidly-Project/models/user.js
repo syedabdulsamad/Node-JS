@@ -10,15 +10,13 @@ const userSchema = mongoose.Schema({
     email: {
         type: String,
         unique: true
-    }
+    }, 
+    isAdmin: Boolean
 });
 
 userSchema.methods.generateAuthToken = function() {
 
-    const filteredUser = lodash.pick(this, ["_id","name", "email"]);
-
-
-    console.log("filered User" + filteredUser);
+    const filteredUser = lodash.pick(this, ["_id", "name", "email", "isAdmin"]);
     const token = jwt.sign(filteredUser,config.get("vidly_auth_private_key"));
     return token;
 };

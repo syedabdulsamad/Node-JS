@@ -1,6 +1,7 @@
 const express = require("express");
 const auth = require("../middlware/auth");
 const Joi = require("joi");
+const admin = require("../middlware/admin");
 const {Genere, GenereSchema} = require("../models/genere");
 const mongoose =  require("mongoose")
 const router = express.Router();
@@ -9,7 +10,6 @@ router.get("/", async (req, res) => {
     const geners = await Genere.find();
     res.send(geners)
 });
-
 
 router.get("/:id", async (req, res) => {
     const genere = await Genere.findById({_id: req.params.id});
@@ -50,7 +50,7 @@ router.put("/:id", auth, async (req, res) => {
     });
 });
 
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/:id", [auth, admin], async (req, res) => {
     const deletedGenere = await Genere.findByIdAndRemove(req.params.id, (error, result) => {
         if(error) {
             res.status(404).send(error.message);  
