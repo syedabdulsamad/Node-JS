@@ -1,8 +1,11 @@
 const Joi = require("@hapi/joi");
 Joi.objectId = require("joi-objectid")(Joi);
+const winston = require("winston");
 const mongoose =  require("mongoose");
 const config =  require("config");
 const express = require("express");
+
+const error = require("./middlware/error");
 const router = require("./Routers/genere-route");
 const movieRouter = require("./Routers/movie-route");
 const customerRouter = require("./Routers/customer-route");
@@ -20,6 +23,10 @@ app.use("/api/rentals", rentalRouter);
 app.use("/api/customers", customerRouter);
 app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
+
+app.use(error);
+
+winston.add(winston.transports.File, {filename: "logfile.log"}); 
 
 if(!config.get("vidly_auth_private_key")) {
 

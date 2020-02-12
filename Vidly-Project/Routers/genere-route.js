@@ -1,4 +1,5 @@
 const express = require("express");
+const asyncMiddleware = require("../middlware/async");
 const auth = require("../middlware/auth");
 const Joi = require("joi");
 const admin = require("../middlware/admin");
@@ -6,10 +7,13 @@ const {Genere, GenereSchema} = require("../models/genere");
 const mongoose =  require("mongoose")
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-    const geners = await Genere.find();
-    res.send(geners)
-});
+
+
+router.get("/", asyncMiddleware(async (req, res) => {
+    throw new Error("Could not retrive genere");
+    const geners = await Genere.find();        
+    res.send(geners);
+}));
 
 router.get("/:id", async (req, res) => {
     const genere = await Genere.findById({_id: req.params.id});
