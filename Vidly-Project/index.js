@@ -27,11 +27,17 @@ app.use("/api/auth", authRouter);
 
 app.use(error);
 
+
 winston.add(winston.transports.File, {filename: "logfile.log"}); 
 winston.add(winston.transports.MongoDB, {db: "mongodb://localhost/vidly", level: "error"});
 
-if(!config.get("vidly_auth_private_key")) {
+process.on("uncaughtException", (ex) => {
+    console.log("AN uncaugh exception happened.");
+    winston.error(ex.message, ex);
+});
 
+
+if(!config.get("vidly_auth_private_key")) {
     console.log("Authorization key not found... EXITING app...");
     process.exit(1);
 }

@@ -10,7 +10,6 @@ const router = express.Router();
 
 
 router.get("/", asyncMiddleware(async (req, res) => {
-    throw new Error("Could not retrive genere. This is new");
     const geners = await Genere.find();        
     res.send(geners);
 }));
