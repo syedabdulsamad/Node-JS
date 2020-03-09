@@ -1,4 +1,5 @@
 const Joi = require("@hapi/joi");
+require("winston-mongodb");
 Joi.objectId = require("joi-objectid")(Joi);
 const winston = require("winston");
 const mongoose =  require("mongoose");
@@ -27,6 +28,7 @@ app.use("/api/auth", authRouter);
 app.use(error);
 
 winston.add(winston.transports.File, {filename: "logfile.log"}); 
+winston.add(winston.transports.MongoDB, {db: "mongodb://localhost/vidly", level: "error"});
 
 if(!config.get("vidly_auth_private_key")) {
 
