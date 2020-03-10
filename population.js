@@ -14,7 +14,7 @@ const Author = mongoose.model('Author', authorSchema);
 
 const Course = mongoose.model('Course', new mongoose.Schema({
   name: String,
-  author:  authorSchema
+  author: authorSchema
 }));
 
 async function createAuthor(name, bio, website) { 

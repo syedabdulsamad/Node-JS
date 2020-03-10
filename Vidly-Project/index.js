@@ -1,50 +1,12 @@
 const Joi = require("@hapi/joi");
-require("winston-mongodb");
 Joi.objectId = require("joi-objectid")(Joi);
 const winston = require("winston");
-const mongoose =  require("mongoose");
-const config =  require("config");
 const express = require("express");
-
-const error = require("./middlware/error");
-const router = require("./Routers/genere-route");
-const movieRouter = require("./Routers/movie-route");
-const customerRouter = require("./Routers/customer-route");
-const rentalRouter = require("./Routers/rental-route");
-const userRouter = require("./Routers/user-route");
-const authRouter = require("./Routers/auth-route")
-
 const app = express();
 
-app.use(express.json());
-
-app.use("/api/movies", movieRouter);
-app.use("/api/geners", router);
-app.use("/api/rentals", rentalRouter);
-app.use("/api/customers", customerRouter);
-app.use("/api/users", userRouter);
-app.use("/api/auth", authRouter);
-
-app.use(error);
-
-
-winston.add(winston.transports.File, {filename: "logfile.log"}); 
-winston.add(winston.transports.MongoDB, {db: "mongodb://localhost/vidly", level: "error"});
-
-process.on("uncaughtException", (ex) => {
-    console.log("AN uncaugh exception happened.");
-    winston.error(ex.message, ex);
-});
-
-
-if(!config.get("vidly_auth_private_key")) {
-    console.log("Authorization key not found... EXITING app...");
-    process.exit(1);
-}
-
+require("./startup/logging")();
+require("./startup/config")();
+require("./startup/dbconnectivity")();
+require("./startup/routes")(app);
 const port = process.env.port || 4000;
-app.listen(port, () => {console.log(`Listening on port ${port}`)});
-
-mongoose.connect("mongodb://localhost/vidly", {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
-.then(() => {console.log("Connected to vidly database")})
-.catch((error)=> {console.log(error.message)});
+app.listen(port, () => {winston.info(`Listening on port ${port}`)});
