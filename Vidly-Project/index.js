@@ -9,4 +9,6 @@ require("./startup/config")();
 require("./startup/dbconnectivity")();
 require("./startup/routes")(app);
 const port = process.env.port || 4000;
-app.listen(port, () => {winston.info(`Listening on port ${port}`)});
+const server = app.listen(port, () => {winston.info(`Listening on port ${port}`)});
+// exporting server object to be used in integration tests.
+module.exports = server;

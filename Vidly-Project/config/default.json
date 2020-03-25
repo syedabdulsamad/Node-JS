@@ -1,3 +1,4 @@
 {
-    "vidly_auth_private_key": ""
+    "vidly_auth_private_key": "",
+    "db": "mongodb://localhost/vidly"
 }

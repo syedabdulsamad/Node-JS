@@ -8,9 +8,12 @@ module.exports = (req, res, next) => {
     }
     try {
         const decodedToken = jwt.verify(token, config.get("vidly_auth_private_key"));
-        console.log("Decoded token " + decodedToken.keys);
+        //console.log("Decoded token: " + decodedToken);
+
+        //console.log("Before Request user : " + req.user);
+
         req.user = decodedToken;
-        console.log("Here");
+        //console.log("After Request user : " + req.user);
         next();
     }
     catch(ex) {

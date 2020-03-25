@@ -1,10 +1,10 @@
 {
   "name": "vidly-project",
   "version": "1.0.0",
-  "description": "Generes endpoint",
+  "description": "Genres endpoint",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll"
+    "test": "jest --watchAll --verbose --runInBand"
   },
   "author": "Syed Abdul Samad",
   "license": "ISC",
@@ -26,6 +26,7 @@
     "winston-mongodb": "^3.0.0"
   },
   "devDependencies": {
-    "jest": "^25.1.0"
+    "jest": "^25.1.0",
+    "supertest": "^4.0.2"
   }
 }

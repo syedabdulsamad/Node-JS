@@ -1,4 +1,5 @@
 const express = require("express");
+const validateObjectIds = require("../middlware/validateObjectIds");
 const asyncMiddleware = require("../middlware/async");
 const auth = require("../middlware/auth");
 const Joi = require("joi");
@@ -7,14 +8,15 @@ const {Genere, GenereSchema} = require("../models/genere");
 const mongoose =  require("mongoose")
 const router = express.Router();
 
-
-
 router.get("/", asyncMiddleware(async (req, res) => {
     const geners = await Genere.find();        
     res.send(geners);
 }));
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", validateObjectIds, async (req, res) => {
+    if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+       return res.status(404).send(`Genere not found with id ${req.body.id}`)
+    }
     const genere = await Genere.findById({_id: req.params.id});
     (genere == null) ? res.status(404).send(`Genere not found with id ${req.body.id}`) : res.send(genere)
 });
