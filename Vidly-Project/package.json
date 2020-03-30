@@ -4,7 +4,7 @@
   "description": "Genres endpoint",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll --verbose --runInBand"
+    "test": "jest --watchAll --verbose --runInBand --coverage"
   },
   "author": "Syed Abdul Samad",
   "license": "ISC",
@@ -26,6 +26,7 @@
     "winston-mongodb": "^3.0.0"
   },
   "devDependencies": {
+    "@types/joi": "^14.3.4",
     "jest": "^25.1.0",
     "supertest": "^4.0.2"
   }

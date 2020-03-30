@@ -6,6 +6,7 @@ const customerRouter = require("../Routers/customer-route");
 const rentalRouter = require("../Routers/rental-route");
 const userRouter = require("../Routers/user-route");
 const authRouter = require("../Routers/auth-route");
+const renturnsRouter =  require("../Routers/returns-route");
 
 module.exports = function(app) {
     app.use(express.json());
@@ -15,5 +16,6 @@ module.exports = function(app) {
     app.use("/api/customers", customerRouter);
     app.use("/api/users", userRouter);
     app.use("/api/auth", authRouter);
+    app.use("/api/returns", renturnsRouter);
     app.use(error);
 }

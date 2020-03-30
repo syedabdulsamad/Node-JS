@@ -4,30 +4,17 @@ const {Genere} = require("../../models/genere");
 const {User} = require("../../models/user");
 
 describe("/api/genere", () => {
-    // beforeEach(() => {
-    //     console.log("Before each Genre");
-    //     server = require("../../index");
-    // });
-    // afterEach(async () => {
-    //     console.log("After each Genre");
-    //     await Genere.deleteMany({});
-    //     await server.close();
-    // });
-
-
+    
     beforeAll(() => {
-            console.log("Before ALL Genre");
             server = require("../../index");
         });
         afterAll(async () => {
-            console.log("After ALL Genre");
             await server.close();
         });
     
 
     describe("/GET", () => {
         afterEach(async() =>{
-            console.log("Clearing Genre...");
             await Genere.deleteMany({});
         });
 
@@ -39,7 +26,6 @@ describe("/api/genere", () => {
             ]);
             const res = await request(server).get("/api/geners");
             expect(res.status).toBe(200);
-            console.log("response body is : " + res.body);
             expect(res.body.length).toBe(3);
             expect(res.body.map(g => g.name)).toContain("genre1");
         });
@@ -48,7 +34,6 @@ describe("/api/genere", () => {
     describe("/GET/:id", () => {
 
         afterEach(async() =>{
-            console.log("Clearing Genre...");
             await Genere.deleteMany({});
         });
         
@@ -73,7 +58,6 @@ describe("/api/genere", () => {
 
     describe("/POST", () => {
         afterEach(async() =>{
-            console.log("Clearing Genre...");
             await Genere.deleteMany({});
         });
 
