@@ -21,8 +21,6 @@ describe("/post", () => {
         token = new User().generateAuthToken();
         customerId = mongoose.Types.ObjectId();
         movieId = mongoose.Types.ObjectId();
-        dateIn = null;
-
         rentalReturn = new RentalReturn({
             customer: {
                 _id: customerId,
@@ -49,7 +47,8 @@ describe("/post", () => {
         const result = await RentalReturn.findById(rentalReturn._id);
 
         expect(result).not.toBeNull();
-        expect(result.customer._id.toHexString()).toEqual(customerId.toHexString());  
+        expect(result.customer._id.toHexString()).toEqual(customerId.toHexString());
+        
     });
 
     it("should return 401 if the user is not logged in", async() => {
@@ -72,9 +71,9 @@ describe("/post", () => {
         expect(res.status).toBe(400);
     });
 
+
+
     it("should return 404 if no rental is found for provided customerId and movieId", async() => {
-        customerId = mongoose.Types.ObjectId();
-        movieId = mongoose.Types.ObjectId();
         const res = await request(server)
         .post("/api/returns")
         .set("x-auth-token", token)
@@ -82,42 +81,5 @@ describe("/post", () => {
 
         expect(res.status).toBe(404);
     });
-
-    it("should return 200 if movie is found for provided customerId and movieId", async() => {
-        const res = await request(server)
-        .post("/api/returns")
-        .set("x-auth-token", token)
-        .send({customerId, movieId});
-
-        expect(res.status).toBe(200);
-    });
-
-    it("should return 400 if dateIn is set for the record", async() => {
-        rentalReturn.dateIn = Date.now()
-        await rentalReturn.save();
-
-        const res = await request(server)
-        .post("/api/returns")
-        .set("x-auth-token", token)
-        .send({customerId, movieId});
-
-        expect(res.status).toBe(400);
-    });
-
-    it("should test if return date is set", async() => {
-
-        const res = await request(server)
-        .post("/api/returns")
-        .set("x-auth-token", token)
-        .send({customerId, movieId});
-
-
-        // why i need to do that... Check
-        const obj = JSON.parse(res.text,null);
-        const fetchedRental = await RentalReturn.findById(rentalReturn._id);
-        expect(fetchedRental.dateIn).not.toBeNull();
-    });
-
-
 
 });
