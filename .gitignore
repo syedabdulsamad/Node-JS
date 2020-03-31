@@ -2,4 +2,6 @@ node_modules/
 package-lock.json
 express/.vscode/launch.json
 express/package-lock.json
+Vidly-Project/coverage/
+Vidly-Project/*.log/
 .vscode/

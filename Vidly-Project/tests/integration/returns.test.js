@@ -36,12 +36,17 @@ describe("/post", () => {
         });
         await rentalReturn.save();
     });
-
-
     
     afterEach(async()=> {
         await RentalReturn.deleteMany({});
     });
+
+    const exec = () => {
+        return request(server)
+        .post("/api/returns")
+        .set("x-auth-token", token)
+        .send({customerId, movieId});
+    }
 
     it("should have object in DB", async() => {
         const result = await RentalReturn.findById(rentalReturn._id);
@@ -53,32 +58,18 @@ describe("/post", () => {
 
     it("should return 401 if the user is not logged in", async() => {
         token = "";
-        // { customerId, movieId } is equivalent to { customerId: customerId, movieId: movieId }
-        const res = await request(server)
-        .post("/api/returns")
-        .send({ customerId, movieId });
-
+        const res = await exec();
         expect(res.status).toBe(401);
     });
 
     it("should return 400 is customerid is not provided", async() => {
-
-        const res = await request(server)
-        .post("/api/returns")
-        .set("x-auth-token", token)
-        .send({ movieId });
-
+        customerId = null;
+        const res = await exec();
         expect(res.status).toBe(400);
     });
 
-
-
     it("should return 404 if no rental is found for provided customerId and movieId", async() => {
-        const res = await request(server)
-        .post("/api/returns")
-        .set("x-auth-token", token)
-        .send({customerId, movieId});
-
+        const res = await exec()
         expect(res.status).toBe(404);
     });
 
