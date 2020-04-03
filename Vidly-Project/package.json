@@ -4,8 +4,8 @@
   "description": "Genres endpoint",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll --verbose --runInBand --coverage",
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
     "node": "10.16.3"
