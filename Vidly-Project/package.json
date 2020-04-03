@@ -4,16 +4,22 @@
   "description": "Genres endpoint",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll --verbose --runInBand --coverage"
+    "test": "jest --watchAll --verbose --runInBand --coverage",
+    "start": "npm start"
+  },
+  "engines": {
+    "node": "10.16.3"
   },
   "author": "Syed Abdul Samad",
   "license": "ISC",
   "dependencies": {
     "@hapi/joi": "^17.1.0",
     "bcrypt": "^3.0.7",
+    "compression": "^1.7.4",
     "config": "^3.2.5",
     "express": "^4.17.1",
     "fawn": "^2.1.5",
+    "helmet": "^3.22.0",
     "joi": "^14.3.1",
     "joi-objectid": "^3.0.1",
     "joi-password-complexity": "^4.0.0",

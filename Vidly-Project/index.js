@@ -8,6 +8,8 @@ require("./startup/logging")();
 require("./startup/config")();
 require("./startup/dbconnectivity")();
 require("./startup/routes")(app);
+require("./startup/prod")(app);
+
 const port = process.env.port || 4000;
 const server = app.listen(port, () => {winston.info(`Listening on port ${port}`)});
 // exporting server object to be used in integration tests.
