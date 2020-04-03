@@ -4,6 +4,7 @@
   "description": "Genres endpoint",
   "main": "index.js",
   "scripts": {
+    "test": "jest --watchAll --verbose --runInBand --coverage",
     "start": "node index.js"
   },
   "engines": {
